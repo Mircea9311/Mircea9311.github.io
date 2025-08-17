@@ -1,16 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuizMe Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mircea C · Automation Developer</title>
+  <meta name="description" content="RPA & Python automation developer with 6+ years of experience in UiPath, Blue Prism, and Python. I design, build, and scale automations that save time and reduce errors." />
+  <meta property="og:title" content="Mircea C · Automation Developer" />
+  <meta property="og:description" content="RPA & Python automation developer with 6+ years of experience in UiPath, Blue Prism, and Python." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0f172a" />
+  <style>
+    :root{
+      --bg: #0b0f1a;
+      --surface: #0f172a;
+      --muted: #94a3b8;
+      --text: #e2e8f0;
+      --accent: #60a5fa;
+      --accent-2:#34d399;
+      --ring: rgba(96,165,250,.5);
+      --card: rgba(15,23,42,.6);
+      --shadow: 0 10px 30px rgba(2,6,23,.35);
+      --radius: 16px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f5f7fb; --surface:#ffffff; --text:#0b1220; --muted:#4b5563; --card:#ffffffcc; --shadow:0 10px 24px rgba(2,6,23,.08);}  
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;scroll-behavior:smooth;background:radial-gradient(1200px 600px at 10% -10%, rgba(56,189,248,.18), transparent 60%),
+      radial-gradient(1000px 500px at 110% -10%, rgba(99,102,241,.18), transparent 60%),
+      var(--bg); color:var(--text); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji"}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1100px, 92vw); margin:0 auto}
+    .nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg, rgba(2,6,23,.75), rgba(2,6,23,0));backdrop-filter:saturate(140%) blur(12px);}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+    .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg, var(--accent), var(--accent-2));box-shadow:var(--shadow)}
+    .menu{display:flex;gap:16px;flex-wrap:wrap}
+    .menu a{padding:8px 12px;border-radius:12px;opacity:.9}
+    .menu a:hover, .menu a[aria-current="page"]{background:rgba(148,163,184,.12);opacity:1}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid rgba(148,163,184,.25);border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));box-shadow:var(--shadow)}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 14px 34px rgba(2,6,23,.45)}
+
+    /* Hero */
+    .hero{padding:80px 0 40px;display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center}
+    .hero-card{border-radius:var(--radius);padding:28px;background:var(--card);border:1px solid rgba(148,163,184,.18);box-shadow:var(--shadow)}
+    .kicker{display:inline-flex;gap:8px;align-items:center;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+    .kicker .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg, var(--accent), var(--accent-2))}
+    h1{font-size:clamp(28px, 4vw, 44px);line-height:1.15;margin:10px 0 14px}
+    .lead{font-size:clamp(16px, 1.6vw, 19px);color:var(--text);opacity:.9}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+
+    /* Section */
+    section{padding:64px 0}
+    section header h2{font-size:clamp(22px, 2.6vw, 30px);margin:0 0 8px}
+    section header p{margin:0;color:var(--muted)}
+    .cards{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:24px}
+    .card{grid-column:span 6;border-radius:var(--radius);padding:22px;background:var(--card);border:1px solid rgba(148,163,184,.18);min-height:120px}
+    .card--full{grid-column:1/-1}
+    .card h3{margin:0 0 6px}
+    .icon{width:22px;height:22px;opacity:.9}
+
+    /* Timeline */
+    .timeline{position:relative;margin-top:24px}
+    .timeline::before{content:"";position:absolute;left:14px;top:0;bottom:0;width:2px;background:linear-gradient(180deg, var(--accent), transparent)}
+    .step{position:relative;display:grid;grid-template-columns:36px 1fr;gap:14px;padding:14px 0}
+    .step .bullet{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg, var(--accent), var(--accent-2));box-shadow:var(--shadow)}
+    .step h4{margin:0}
+    .step p{margin:6px 0 0;color:var(--muted)}
+
+    /* Projects */
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .filter-btn{padding:8px 12px;border-radius:999px;border:1px solid rgba(148,163,184,.25);background:transparent;cursor:pointer}
+    .filter-btn[aria-pressed="true"]{background:rgba(148,163,184,.15)}
+    .project{grid-column:span 4;display:flex;flex-direction:column;gap:12px}
+    .project .thumb{aspect-ratio:16/9;border-radius:14px;background:linear-gradient(135deg, rgba(96,165,250,.3), rgba(52,211,153,.3));border:1px solid rgba(148,163,184,.18)}
+    .project .meta{display:flex;justify-content:space-between;align-items:center}
+    .tag{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(148,163,184,.15);border:1px solid rgba(148,163,184,.2)}
+
+    /* Contact */
+    .contact-card{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .contact-card .field{border-radius:12px;padding:16px;background:var(--card);border:1px solid rgba(148,163,184,.18)}
+
+    /* Footer */
+    footer{padding:28px 0;color:var(--muted);border-top:1px solid rgba(148,163,184,.18)}
+
+    /* Reveal on scroll */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
+
+    /* Utilities */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .muted{color:var(--muted)}
+    .right{justify-content:flex-end}
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero{grid-template-columns:1fr;gap:18px}
+      .card{grid-column:1/-1}
+      .project{grid-column:span 6}
+      .contact-card{grid-template-columns:1fr}
+    }
+    @media (max-width: 640px){
+      .project{grid-column:1/-1}
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Mircea C",
+    "jobTitle": "Automation Developer",
+    "url": "https://mircea9311.github.io/",
+    "knowsAbout": ["RPA", "UiPath", "Blue Prism", "Python", "Process Automation"],
+    "sameAs": []
+  }
+  </script>
 </head>
 <body>
-    <h1>Welcome to QuizMe Hub</h1>
-    <p>Check out our documents below:</p>
-    <ul>
-        <li><a href="PrivacyPolicy.html" target="_blank">Privacy Policy</a></li>
-        <li><a href="TermsofService.html" target="_blank">Terms of Service</a></li>
-    </ul>
+  <!-- NAV -->
+  <nav class="nav" aria-label="Primary">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="Go to top">
+        <span class="avatar" aria-hidden="true"></span>
+        <span>Mircea&nbsp;C — Automation Developer</span>
+      </a>
+      <div class="menu" role="menubar">
+        <a role="menuitem" href="#about">About</a>
+        <a role="menuitem" href="#automation">Automation</a>
+        <a role="menuitem" href="#steps">Process Steps</a>
+        <a role="menuitem" href="#projects">Projects</a>
+        <a role="menuitem" href="#contact">Contact</a>
+        <button id="themeToggle" class="btn" aria-pressed="false" aria-label="Toggle theme">🌓 Theme</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top" class="container">
+    <!-- HERO / ABOUT -->
+    <section id="about" class="hero">
+      <div class="hero-card reveal">
+        <div class="kicker"><span class="dot" aria-hidden="true"></span> Hello</div>
+        <h1>Automation developer focused on turning repetitive work into reliable software.</h1>
+        <p class="lead">I have 6+ years building, deploying, and maintaining automations in <strong>Python</strong>, <strong>UiPath</strong>, and <strong>Blue Prism</strong>. I help teams ship faster, reduce errors, and scale operations with auditable, resilient bots.</p>
+        <div class="cta">
+          <a class="btn" href="#contact" aria-label="Jump to contact">Let’s work together</a>
+          <a class="btn" href="#projects" aria-label="Jump to projects">See selected projects</a>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card reveal">
+          <h3>What I do</h3>
+          <p class="muted">Process discovery, solution design, bot development, testing, orchestration, monitoring, and continuous improvement. From quick Python scripts to enterprise-grade RPA.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Where I add value</h3>
+          <p class="muted">Back-office operations, finance, banking, customer support, reporting, and high-volume, rule-based workflows. I focus on stability, observability, and measurable ROI.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY AUTOMATION -->
+    <section id="automation">
+      <header class="reveal">
+        <h2>Why automate processes?</h2>
+        <p>Automation converts repeatable tasks into reliable, fast, and compliant workflows.</p>
+      </header>
+      <div class="cards">
+        <article class="card reveal" aria-label="Efficiency">
+          <h3>Efficiency</h3>
+          <p class="muted">Bots work 24/7 and scale on demand, cutting cycle times from hours to minutes and freeing people to focus on higher-value work.</p>
+        </article>
+        <article class="card reveal" aria-label="Accuracy & Compliance">
+          <h3>Accuracy &amp; Compliance</h3>
+          <p class="muted">Consistent rule application and audit trails reduce costly errors and improve compliance posture across critical processes.</p>
+        </article>
+        <article class="card reveal" aria-label="Cost Savings">
+          <h3>Cost Savings</h3>
+          <p class="muted">Lower operational costs through reduced manual effort, fewer escalations, and smoother peaks without overstaffing.</p>
+        </article>
+        <article class="card reveal" aria-label="Scalability">
+          <h3>Scalability</h3>
+          <p class="muted">Automations scale horizontally to meet demand, with orchestration ensuring optimal utilization and resilience.</p>
+        </article>
+        <article class="card reveal card--full" aria-label="How it works">
+          <h3>How automation works (in practice)</h3>
+          <p class="muted">We map business rules, identify systems of record, define exceptions, and design a robust, observable flow. Then we build, test, and deploy with proper logging, alerting, and rollbacks.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROCESS STEPS -->
+    <section id="steps">
+      <header class="reveal">
+        <h2>The steps to automate a process</h2>
+        <p>My end-to-end approach from idea to stable production.</p>
+      </header>
+      <div class="timeline">
+        <div class="step reveal">
+          <div class="bullet" aria-hidden="true"></div>
+          <div>
+            <h4>1) Discovery &amp; scoping</h4>
+            <p>Identify candidates with clear rules, stable inputs, measurable volume, and a strong business case. Capture current-state workflow and pain points.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="bullet" aria-hidden="true"></div>
+          <div>
+            <h4>2) Feasibility &amp; ROI assessment</h4>
+            <p>Check systems’ accessibility (APIs/UI), security constraints, exception rates, and estimate savings to prioritize the backlog.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="bullet" aria-hidden="true"></div>
+          <div>
+            <h4>3) Solution design</h4>
+            <p>Define inputs/outputs, business rules, exception paths, credentials handling, logging, alerts, SLAs, and success metrics.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="bullet" aria-hidden="true"></div>
+          <div>
+            <h4>4) Build</h4>
+            <p>Develop bots in Python/UiPath/Blue Prism with modular, testable components and idempotent operations.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="bullet" aria-hidden="true"></div>
+          <div>
+            <h4>5) Test</h4>
+            <p>Unit, integration, and UAT with real data. Validate accuracy, performance, resilience, and observability under expected loads.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="bullet" aria-hidden="true"></div>
+          <div>
+            <h4>6) Deploy &amp; orchestrate</h4>
+            <p>Release via orchestrator (schedules/queues) with secrets management, role-based access, and change control.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="bullet" aria-hidden="true"></div>
+          <div>
+            <h4>7) Monitor &amp; support</h4>
+            <p>Dashboards, alerts, and on-call procedures for exceptions and SLAs. Root-cause analysis for incidents.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="bullet" aria-hidden="true"></div>
+          <div>
+            <h4>8) Improve</h4>
+            <p>Iterate with business feedback, optimize performance, add coverage, and retire redundant steps as systems evolve.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <header class="reveal">
+        <h2>Selected projects</h2>
+        <p>Real-world automations. Click a card to learn more (link to GitHub, case study, or demo).</p>
+      </header>
+      <div class="filters">
+        <button class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter-btn" data-filter="Python">Python</button>
+        <button class="filter-btn" data-filter="UiPath">UiPath</button>
+        <button class="filter-btn" data-filter="BluePrism">Blue Prism</button>
+      </div>
+      <div class="cards" id="projectGrid">
+        <!-- Duplicate/replace these with real items -->
+        <article class="card project reveal" data-tech="Python">
+          <a class="thumb" href="#" aria-label="Open project 1"></a>
+          <div class="meta">
+            <h3 style="margin:0">Invoice extraction & posting</h3>
+            <span class="tag">Python</span>
+          </div>
+          <p class="muted">End-to-end pipeline: OCR, validation, ERP posting, and exception queue. 98% accuracy, 80% cycle-time reduction.</p>
+        </article>
+        <article class="card project reveal" data-tech="UiPath">
+          <a class="thumb" href="#" aria-label="Open project 2"></a>
+          <div class="meta">
+            <h3 style="margin:0">Customer onboarding KYC</h3>
+            <span class="tag">UiPath</span>
+          </div>
+          <p class="muted">Automated KYC checks across 5 systems with robust retries and audit logs. Cut onboarding from 2 days to 2 hours.</p>
+        </article>
+        <article class="card project reveal" data-tech="BluePrism">
+          <a class="thumb" href="#" aria-label="Open project 3"></a>
+          <div class="meta">
+            <h3 style="margin:0">Payments reconciliation</h3>
+            <span class="tag">Blue Prism</span>
+          </div>
+          <p class="muted">Multi-source reconciliation with exception management. Reduced breakage by 70% and improved month-end close.</p>
+        </article>
+        <article class="card project reveal" data-tech="Python">
+          <a class="thumb" href="#" aria-label="Open project 4"></a>
+          <div class="meta">
+            <h3 style="margin:0">Web data collection</h3>
+            <span class="tag">Python</span>
+          </div>
+          <p class="muted">Resilient scraping with anti-bot handling, queuing, and data quality checks feeding analytics dashboards.</p>
+        </article>
+        <article class="card project reveal" data-tech="UiPath">
+          <a class="thumb" href="#" aria-label="Open project 5"></a>
+          <div class="meta">
+            <h3 style="margin:0">Back-office ticket triage</h3>
+            <span class="tag">UiPath</span>
+          </div>
+          <p class="muted">Categorization, routing, and SLA-aware follow-ups integrated with ServiceNow and email channels.</p>
+        </article>
+        <article class="card project reveal" data-tech="BluePrism">
+          <a class="thumb" href="#" aria-label="Open project 6"></a>
+          <div class="meta">
+            <h3 style="margin:0">Reporting automation</h3>
+            <span class="tag">Blue Prism</span>
+          </div>
+          <p class="muted">Daily regulatory reports with data validation, formatting, and secure distribution to stakeholders.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <header class="reveal">
+        <h2>Contact</h2>
+        <p>Ready to automate? Reach out and let’s scope your process.</p>
+      </header>
+      <div class="contact-card">
+        <div class="field reveal">
+          <strong>Email</strong>
+          <p class="muted"><a href="mailto:your.email@example.com">your.email@example.com</a></p>
+        </div>
+        <div class="field reveal">
+          <strong>LinkedIn</strong>
+          <p class="muted"><a href="https://www.linkedin.com/" target="_blank" rel="noopener">linkedin.com/in/your-handle</a></p>
+        </div>
+      </div>
+      <div class="cta" style="margin-top:16px">
+        <a class="btn right" href="#top" aria-label="Back to top">↑ Back to top</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="year"></span> Mircea C. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Theme toggle (light/dark)
+    const toggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    let dark = true;
+    toggle?.addEventListener('click', () => {
+      dark = !dark;
+      toggle.setAttribute('aria-pressed', String(!dark));
+      if(dark){
+        root.removeAttribute('data-theme');
+      }else{
+        root.setAttribute('data-theme','light');
+      }
+    });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} })
+    },{threshold:.12, rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Projects filter
+    const buttons = document.querySelectorAll('.filter-btn');
+    const grid = document.getElementById('projectGrid');
+    const projects = Array.from(grid.children);
+    buttons.forEach(btn=>btn.addEventListener('click', ()=>{
+      buttons.forEach(b=>b.setAttribute('aria-pressed','false'));
+      btn.setAttribute('aria-pressed','true');
+      const f = btn.dataset.filter;
+      projects.forEach(card=>{
+        const show = f==='all' || card.dataset.tech===f;
+        card.style.display = show ? '' : 'none';
+      });
+    }));
+
+    // Current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
