@@ -54,8 +54,9 @@
     .menu{display:flex;gap:16px;flex-wrap:wrap}
     .menu a{padding:8px 12px;border-radius:12px;opacity:.9}
     .menu a:hover, .menu a[aria-current="page"]{background:rgba(148,163,184,.12);opacity:1}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid rgba(148,163,184,.25);border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));box-shadow:var(--shadow)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid rgba(148,163,184,.25);border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));box-shadow:var(--shadow);color:var(--text);cursor:pointer;-webkit-tap-highlight-color:transparent}
     .btn:hover{transform:translateY(-1px);box-shadow:0 14px 34px rgba(2,6,23,.45)}
+    .nav-toggle{display:none;line-height:1}
 
     /* Hero */
     .hero{padding:80px 0 40px;display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center}
@@ -89,9 +90,19 @@
     .filter-btn{padding:8px 12px;border-radius:999px;border:1px solid rgba(148,163,184,.25);background:transparent;cursor:pointer;color: var(--text);}
     .filter-btn[aria-pressed="true"]{background:rgba(148,163,184,.15)}
     .project{grid-column:span 4;display:flex;flex-direction:column;gap:12px}
-    .project .thumb{aspect-ratio:16/9;border-radius:14px;background:linear-gradient(135deg, rgba(96,165,250,.3), rgba(52,211,153,.3));border:1px solid rgba(148,163,184,.18)}
+    .project .thumb{
+      aspect-ratio:16/9;
+      border-radius:14px;
+      /* Layered background: optional image over gradient */
+      background-image: var(--thumb-img, none), linear-gradient(135deg, rgba(96,165,250,.3), rgba(52,211,153,.3));
+      background-size: cover, auto;
+      background-position: center, center;
+      background-repeat: no-repeat, no-repeat;
+      border:1px solid rgba(148,163,184,.18)
+    }
     .project .meta{display:flex;justify-content:space-between;align-items:center}
     .tag{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(148,163,184,.15);border:1px solid rgba(148,163,184,.2)}
+    .tag{white-space:nowrap}
 
     /* Contact */
     .contact-card{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -118,6 +129,22 @@
     }
     @media (max-width: 640px){
       .project{grid-column:1/-1}
+      .nav-inner{padding:12px 0}
+      .nav-toggle{display:inline-flex}
+      .menu{position:absolute;left:0;right:0;top:var(--nav-h);display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(15,23,42,.95);backdrop-filter:blur(10px);border-top:1px solid rgba(148,163,184,.18);border-bottom:1px solid rgba(148,163,184,.18);box-shadow:var(--shadow)}
+      .menu a, .menu .btn{padding:12px 16px;font-size:15px;border-radius:12px}
+      .menu .btn{justify-content:center}
+      .nav.open .menu{display:flex}
+    }
+    @media (max-width: 480px){
+      .nav{background:linear-gradient(180deg, rgba(2,6,23,.9), rgba(2,6,23,.2))}
+      .hero{padding:64px 0 28px}
+      .hero-card{padding:22px}
+      .card{padding:18px}
+      .btn{padding:12px 16px;font-weight:600}
+      .filters{overflow-x:auto;gap:10px;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+      .filters::-webkit-scrollbar{display:none}
+      section{padding:52px 0}
     }
   </style>
   <script type="application/ld+json">
@@ -138,14 +165,16 @@
     <div class="container nav-inner">
       <a class="brand" href="#top" aria-label="Go to top">
         <span class="avatar" aria-hidden="true"></span>
-        <span>Mircea&nbsp;C — Automation Developer</span>
+        <span data-i18n="brand">Mircea&nbsp;C — Automation Developer</span>
       </a>
-      <div class="menu" role="menubar">
-        <a role="menuitem" href="#about">About</a>
-        <a role="menuitem" href="#automation">Automation</a>
-        <a role="menuitem" href="#steps">Process Steps</a>
-        <a role="menuitem" href="#projects">Projects</a>
-        <a role="menuitem" href="#contact">Contact</a>
+      <button class="btn nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-menu">☰</button>
+      <div class="menu" id="primary-menu" role="menubar">
+        <a role="menuitem" href="#about" data-i18n="nav_about">About</a>
+        <a role="menuitem" href="#automation" data-i18n="nav_automation">Automation</a>
+        <a role="menuitem" href="#steps" data-i18n="nav_steps">Process Steps</a>
+        <a role="menuitem" href="#projects" data-i18n="nav_projects">Projects</a>
+        <a role="menuitem" href="#contact" data-i18n="nav_contact">Contact</a>
+        <button id="langBtn" class="btn" type="button" aria-label="Switch language" title="Switch language">RO</button>
       </div>
     </div>
   </nav>
@@ -154,22 +183,22 @@
     <!-- HERO / ABOUT -->
     <section id="about" class="hero">
       <div class="hero-card reveal">
-        <div class="kicker"><span class="dot" aria-hidden="true"></span>Who am I</div>
-        <h1>Automation developer focused on turning repetitive work into reliable software.</h1>
-        <p class="lead">I have 6+ years building, deploying, and maintaining automations in <strong>Python</strong>, <strong>UiPath</strong>, and <strong>Blue Prism</strong>. I help teams ship faster, reduce errors, and scale operations with auditable, resilient bots.</p>
+        <div class="kicker"><span class="dot" aria-hidden="true"></span><span data-i18n="kicker_who">Who am I</span></div>
+        <h1 data-i18n="hero_h1">Automation developer focused on turning repetitive work into reliable software.</h1>
+        <p class="lead" data-i18n="hero_lead">I have 6+ years building, deploying, and maintaining automations in <strong>Python</strong>, <strong>UiPath</strong>, and <strong>Blue Prism</strong>. I help teams ship faster, reduce errors, and scale operations with auditable, resilient bots.</p>
         <div class="cta">
-          <a class="btn" href="#contact" aria-label="Jump to contact">Let’s work together</a>
-          <a class="btn" href="#projects" aria-label="Jump to projects">See selected projects</a>
+          <a class="btn" href="#contact" aria-label="Jump to contact" data-i18n="cta_contact">Let’s work together</a>
+          <a class="btn" href="#projects" aria-label="Jump to projects" data-i18n="cta_projects">See selected projects</a>
         </div>
       </div>
       <div class="grid-2">
         <div class="card reveal">
-          <h3>What I do</h3>
-          <p class="muted">Process discovery, solution design, bot development, testing, orchestration, monitoring, and continuous improvement. From quick Python scripts to enterprise-grade RPA.</p>
+          <h3 data-i18n="what_i_do_h3">What I do</h3>
+          <p class="muted" data-i18n="what_i_do_p">Process discovery, solution design, bot development, testing, orchestration, monitoring, and continuous improvement. From quick Python scripts to enterprise-grade RPA.</p>
         </div>
         <div class="card reveal">
-          <h3>Where I add value</h3>
-          <p class="muted">Back-office operations, finance, banking, customer support, reporting, and high-volume, rule-based workflows. I focus on stability, observability, and measurable ROI.</p>
+          <h3 data-i18n="where_add_value_h3">Where I add value</h3>
+          <p class="muted" data-i18n="where_add_value_p">Back-office operations, finance, banking, customer support, reporting, and high-volume, rule-based workflows. I focus on stability, observability, and measurable ROI.</p>
         </div>
       </div>
     </section>
@@ -177,29 +206,29 @@
     <!-- WHY AUTOMATION -->
     <section id="automation">
       <header class="reveal">
-        <h2>Why automate processes?</h2>
-        <p>Automation converts repeatable tasks into reliable, fast, and compliant workflows.</p>
+        <h2 data-i18n="why_auto_h2">Why automate processes?</h2>
+        <p data-i18n="why_auto_p">Automation converts repeatable tasks into reliable, fast, and compliant workflows.</p>
       </header>
       <div class="cards">
         <article class="card reveal" aria-label="Efficiency">
-          <h3>Efficiency</h3>
-          <p class="muted">Bots work 24/7 and scale on demand, cutting cycle times from hours to minutes and freeing people to focus on higher-value work.</p>
+          <h3 data-i18n="efficiency_h3">Efficiency</h3>
+          <p class="muted" data-i18n="efficiency_p">Bots work 24/7 and scale on demand, cutting cycle times from hours to minutes and freeing people to focus on higher-value work.</p>
         </article>
         <article class="card reveal" aria-label="Accuracy & Compliance">
-          <h3>Accuracy &amp; Compliance</h3>
-          <p class="muted">Consistent rule application and audit trails reduce costly errors and improve compliance posture across critical processes.</p>
+          <h3 data-i18n="accuracy_h3">Accuracy &amp; Compliance</h3>
+          <p class="muted" data-i18n="accuracy_p">Consistent rule application and audit trails reduce costly errors and improve compliance posture across critical processes.</p>
         </article>
         <article class="card reveal" aria-label="Cost Savings">
-          <h3>Cost Savings</h3>
-          <p class="muted">Lower operational costs through reduced manual effort, fewer escalations, and smoother peaks without overstaffing.</p>
+          <h3 data-i18n="cost_h3">Cost Savings</h3>
+          <p class="muted" data-i18n="cost_p">Lower operational costs through reduced manual effort, fewer escalations, and smoother peaks without overstaffing.</p>
         </article>
         <article class="card reveal" aria-label="Scalability">
-          <h3>Scalability</h3>
-          <p class="muted">Automations scale horizontally to meet demand, with orchestration ensuring optimal utilization and resilience.</p>
+          <h3 data-i18n="scalability_h3">Scalability</h3>
+          <p class="muted" data-i18n="scalability_p">Automations scale horizontally to meet demand, with orchestration ensuring optimal utilization and resilience.</p>
         </article>
         <article class="card reveal card--full" aria-label="How it works">
-          <h3>How automation works (in practice)</h3>
-          <p class="muted">We map business rules, identify systems of record, define exceptions, and design a robust, observable flow. Then we build, test, and deploy with proper logging, alerting, and rollbacks.</p>
+          <h3 data-i18n="how_it_works_h3">How automation works (in practice)</h3>
+          <p class="muted" data-i18n="how_it_works_p">We map business rules, identify systems of record, define exceptions, and design a robust, observable flow. Then we build, test, and deploy with proper logging, alerting, and rollbacks.</p>
         </article>
       </div>
     </section>
@@ -207,64 +236,64 @@
     <!-- PROCESS STEPS -->
     <section id="steps">
       <header class="reveal">
-        <h2>The steps to automate a process</h2>
-        <p>My end-to-end approach from idea to stable production.</p>
+        <h2 data-i18n="steps_h2">The steps to automate a process</h2>
+        <p data-i18n="steps_p">My end-to-end approach from idea to stable production.</p>
       </header>
       <div class="timeline">
         <div class="step reveal">
           <div class="bullet" aria-hidden="true"></div>
           <div>
-            <h4>Discovery &amp; scoping</h4>
-            <p>Identify candidates with clear rules, stable inputs, measurable volume, and a strong business case. Capture current-state workflow and pain points.</p>
+            <h4 data-i18n="step1_h4">Discovery &amp; scoping</h4>
+            <p data-i18n="step1_p">Identify candidates with clear rules, stable inputs, measurable volume, and a strong business case. Capture current-state workflow and pain points.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="bullet" aria-hidden="true"></div>
           <div>
-            <h4>Feasibility &amp; ROI assessment</h4>
-            <p>Check systems’ accessibility (APIs/UI), security constraints, exception rates, and estimate savings to prioritize the backlog.</p>
+            <h4 data-i18n="step2_h4">Feasibility &amp; ROI assessment</h4>
+            <p data-i18n="step2_p">Check systems’ accessibility (APIs/UI), security constraints, exception rates, and estimate savings to prioritize the backlog.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="bullet" aria-hidden="true"></div>
           <div>
-            <h4>Solution design</h4>
-            <p>Define inputs/outputs, business rules, exception paths, credentials handling, logging, alerts, SLAs, and success metrics.</p>
+            <h4 data-i18n="step3_h4">Solution design</h4>
+            <p data-i18n="step3_p">Define inputs/outputs, business rules, exception paths, credentials handling, logging, alerts, SLAs, and success metrics.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="bullet" aria-hidden="true"></div>
           <div>
-            <h4>Build</h4>
-            <p>Develop bots in Python/UiPath/Blue Prism with modular, testable components and idempotent operations.</p>
+            <h4 data-i18n="step4_h4">Build</h4>
+            <p data-i18n="step4_p">Develop bots in Python/UiPath/Blue Prism with modular, testable components and idempotent operations.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="bullet" aria-hidden="true"></div>
           <div>
-            <h4>Test</h4>
-            <p>Unit, integration, and UAT with real data. Validate accuracy, performance, resilience, and observability under expected loads.</p>
+            <h4 data-i18n="step5_h4">Test</h4>
+            <p data-i18n="step5_p">Unit, integration, and UAT with real data. Validate accuracy, performance, resilience, and observability under expected loads.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="bullet" aria-hidden="true"></div>
           <div>
-            <h4>Deploy &amp; orchestrate</h4>
-            <p>Release via orchestrator (schedules/queues) with secrets management, role-based access, and change control.</p>
+            <h4 data-i18n="step6_h4">Deploy &amp; orchestrate</h4>
+            <p data-i18n="step6_p">Release via orchestrator (schedules/queues) with secrets management, role-based access, and change control.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="bullet" aria-hidden="true"></div>
           <div>
-            <h4>Monitor &amp; support</h4>
-            <p>Dashboards, alerts, and on-call procedures for exceptions and SLAs. Root-cause analysis for incidents.</p>
+            <h4 data-i18n="step7_h4">Monitor &amp; support</h4>
+            <p data-i18n="step7_p">Dashboards, alerts, and on-call procedures for exceptions and SLAs. Root-cause analysis for incidents.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="bullet" aria-hidden="true"></div>
           <div>
-            <h4>Improve</h4>
-            <p>Iterate with business feedback, optimize performance, add coverage, and retire redundant steps as systems evolve.</p>
+            <h4 data-i18n="step8_h4">Improve</h4>
+            <p data-i18n="step8_p">Iterate with business feedback, optimize performance, add coverage, and retire redundant steps as systems evolve.</p>
           </div>
         </div>
       </div>
@@ -273,63 +302,63 @@
     <!-- PROJECTS -->
     <section id="projects">
       <header class="reveal">
-        <h2>Selected projects</h2>
-        <p>Real-world automations. Click a card to learn more (link to GitHub, case study, or demo).</p>
+        <h2 data-i18n="projects_h2">Selected projects</h2>
+        <p data-i18n="projects_p">Real-world automations. Click a card to learn more (link to GitHub, case study, or demo).</p>
       </header>
       <div class="filters">
-        <button class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter-btn" data-filter="all" aria-pressed="true" data-i18n="filter_all">All</button>
         <button class="filter-btn" data-filter="Python">Python</button>
         <button class="filter-btn" data-filter="UiPath">UiPath</button>
         <button class="filter-btn" data-filter="BluePrism">Blue Prism</button>
       </div>
       <div class="cards" id="projectGrid">
         <article class="card project reveal" data-tech="Python">
-          <a class="thumb" href="#" aria-label="Open project 1"></a>
+          <a class="thumb" href="#" aria-label="Open project 1" data-img="images/slot-sentinel.jpg"></a>          
           <div class="meta">
             <h3 style="margin:0">Slot Sentinel</h3>
             <span class="tag">Python</span>
           </div>
-          <p class="muted">An automated solution that checks government booking portals and notifies you when slots can be booked and when. 100% accuracy, 99% cycle-time reduction.</p>
+          <p class="muted" data-i18n="proj1_p">An automated solution that checks government booking portals and notifies you when slots can be booked and when. 100% accuracy, 99% cycle-time reduction.</p>
         </article>
         <article class="card project reveal" data-tech="UiPath">
-          <a class="thumb" href="#" aria-label="Open project 2"></a>
+          <a class="thumb" href="#" aria-label="Open project 2" data-img="images/exchange-rate-import.jpg"></a> 
           <div class="meta">
             <h3 style="margin:0">Exchange rate import</h3>
             <span class="tag">UiPath</span>
           </div>
-          <p class="muted">A reliable automation assistant that scrapes XML and HTML pages and imports desired exchange rates in core banking solution. 99% success rate, 60% time reduction.</p>
+          <p class="muted" data-i18n="proj2_p">A reliable automation assistant that scrapes XML and HTML pages and imports desired exchange rates in core banking solution. 99% success rate, 60% time reduction.</p>
         </article>
         <article class="card project reveal" data-tech="BluePrism">
-          <a class="thumb" href="#" aria-label="Open project 3"></a>
+          <a class="thumb" href="#" aria-label="Open project 3" data-img="images/a1-bescheinigung-generation.jpg"></a>
           <div class="meta">
             <h3 style="margin:0">A1 bescheinigung generation</h3>
             <span class="tag">Blue Prism</span>
           </div>
-          <p class="muted">Global solution for automated A1 Bescheinigung generation and secure delivery to the requestor, consistently achieving a 99% success rate, 90% time reduction.</p>
+          <p class="muted" data-i18n="proj3_p">Global solution for automated A1 Bescheinigung generation and secure delivery to the requestor, consistently achieving a 99% success rate, 90% time reduction.</p>
         </article>
         <article class="card project reveal" data-tech="Python">
-          <a class="thumb" href="https://github.com/Mircea9311/LA-Times-Robot" aria-label="Open project 4"></a>
+          <a class="thumb" href="https://github.com/Mircea9311/LA-Times-Robot" aria-label="Open project 4" data-img="images/data-scraper.jpg"></a>
           <div class="meta">
             <h3 style="margin:0">Data scraper</h3>
             <span class="tag">Python</span>
           </div>
-          <p class="muted">Resilient scraping with queuing and data quality checks, comprehensive logging and OOP programming style.</p>
+          <p class="muted" data-i18n="proj4_p">Resilient scraping with queuing and data quality checks, comprehensive logging and OOP programming style.</p>
         </article>
         <article class="card project reveal" data-tech="UiPath">
-          <a class="thumb" href="#" aria-label="Open project 5"></a>
+          <a class="thumb" href="#" aria-label="Open project 5" data-img="images/confidential.png"></a>
           <div class="meta">
-            <h3 style="margin:0">Back-office ticket triage</h3>
+            <h3 style="margin:0">Loan contract generation</h3>
             <span class="tag">UiPath</span>
           </div>
-          <p class="muted">Automation robot that processes and generates loan agreements, including special conditions, ensuring accuracy and efficiency in credit contract handling.</p>
+          <p class="muted" data-i18n="proj5_p">Automation robot that processes and generates loan agreements, including special conditions, ensuring accuracy and efficiency in credit contract handling.</p>
         </article>
         <article class="card project reveal" data-tech="BluePrism">
-          <a class="thumb" href="#" aria-label="Open project 6"></a>
+          <a class="thumb" href="#" aria-label="Open project 6" data-img="images/confidential.png"></a>
           <div class="meta">
             <h3 style="margin:0">HR Onboarding</h3>
             <span class="tag">Blue Prism</span>
           </div>
-          <p class="muted">Automated solution that integrates new employees into core HR systems, featuring comprehensive logging and robust exception handling.</p>
+          <p class="muted" data-i18n="proj6_p">Automated solution that integrates new employees into core HR systems, featuring comprehensive logging and robust exception handling.</p>
         </article>
       </div>
     </section>
@@ -337,28 +366,28 @@
     <!-- CONTACT -->
     <section id="contact">
       <header class="reveal">
-        <h2>Contact</h2>
-        <p>Ready to automate? Reach out and let’s scope your process.</p>
+        <h2 data-i18n="contact_h2">Contact</h2>
+        <p data-i18n="contact_p">Ready to automate? Reach out and let’s scope your process.</p>
       </header>
       <div class="contact-card">
         <div class="field reveal">
-          <strong>Email</strong>
+          <strong data-i18n="email_label">Email</strong>
           <p class="muted"><a href="mailto:chelbamircea+github@gmail.com">chelbamircea+github@gmail.com</a></p>
         </div>
         <div class="field reveal">
-          <strong>LinkedIn</strong>
+          <strong data-i18n="linkedin_label">LinkedIn</strong>
           <p class="muted"><a href="https://www.linkedin.com/in/mirceachelba/" target="_blank" rel="noopener">https://www.linkedin.com/in/mirceachelba/</a></p>
         </div>
       </div>
       <!-- Back to top button -->
       <div class="cta" style="margin-top:16px">
-        <a class="btn right" href="#top" aria-label="Back to top">↑ Back to top</a>
+        <a class="btn right" href="#top" aria-label="Back to top" data-i18n="back_to_top">↑ Back to top</a>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container">© <span id="year"></span> Mircea C. All rights reserved.</div>
+    <div class="container">© <span id="year"></span> Mircea C. <span data-i18n="footer_rights">All rights reserved.</span></div>
   </footer>
 
   <script>
@@ -382,8 +411,168 @@
       });
     }));
 
+    // Project thumbnails images (optional). Set data-img on .thumb to apply.
+    document.querySelectorAll('.project .thumb').forEach(el=>{
+      const img = el.dataset.img;
+      if(img){
+        el.style.setProperty('--thumb-img', `url('${img}')`);
+      }
+    });
+
     // Current year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple i18n toggle (EN/RO)
+    (function(){
+      // Mobile nav toggle
+      const nav = document.querySelector('.nav');
+      const navToggle = document.getElementById('navToggle');
+      const menu = document.getElementById('primary-menu');
+      if(navToggle && nav && menu){
+        navToggle.addEventListener('click', ()=>{
+          const isOpen = nav.classList.toggle('open');
+          navToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+        // Close menu when clicking a link (better UX)
+        menu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>{
+          if(nav.classList.contains('open')){
+            nav.classList.remove('open');
+            navToggle.setAttribute('aria-expanded','false');
+          }
+        }));
+      }
+
+      const htmlEl = document.documentElement;
+      const langBtn = document.getElementById('langBtn');
+      const metaTitleEl = document.querySelector('title');
+      const metaDescEl = document.querySelector('meta[name="description"]');
+      const ogTitleEl = document.querySelector('meta[property="og:title"]');
+      const ogDescEl = document.querySelector('meta[property="og:description"]');
+
+      const englishDefaults = {};
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.dataset.i18n;
+        if(!(key in englishDefaults)) englishDefaults[key] = el.innerHTML.trim();
+      });
+
+      const englishMeta = {
+        title: document.title,
+        desc: metaDescEl ? metaDescEl.getAttribute('content') : '' ,
+        ogTitle: ogTitleEl ? ogTitleEl.getAttribute('content') : '',
+        ogDesc: ogDescEl ? ogDescEl.getAttribute('content') : ''
+      };
+
+      const ro = {
+        brand: 'Mircea&nbsp;C — Dezvoltator de automatizări',
+        nav_about: 'Despre',
+        nav_automation: 'Automatizare',
+        nav_steps: 'Pașii procesului',
+        nav_projects: 'Proiecte',
+        nav_contact: 'Contact',
+        kicker_who: 'Cine sunt',
+        hero_h1: 'Dezvoltator de automatizări concentrat pe transformarea muncii repetitive în software fiabil.',
+        hero_lead: 'Am peste 6 ani de experiență în construirea, implementarea și întreținerea automatizărilor în <strong>Python</strong>, <strong>UiPath</strong> și <strong>Blue Prism</strong>. Ajut echipele să livreze mai rapid, să reducă erorile și să scaleze operațiunile cu roboți auditabili și rezilienți.',
+        cta_contact: 'Hai să lucrăm împreună',
+        cta_projects: 'Vezi proiecte selectate',
+        what_i_do_h3: 'Ce fac',
+        what_i_do_p: 'Descoperirea proceselor, proiectarea soluției, dezvoltarea roboților, testare, orchestrare, monitorizare și îmbunătățire continuă. De la scripturi rapide Python la RPA la nivel enterprise.',
+        where_add_value_h3: 'Unde aduc valoare',
+        where_add_value_p: 'Operațiuni back-office, finanțe, banking, suport clienți, raportare și fluxuri de lucru cu volum mare și reguli clare. Mă concentrez pe stabilitate, observabilitate și ROI măsurabil.',
+        why_auto_h2: 'De ce să automatizăm procesele?',
+        why_auto_p: 'Automatizarea transformă sarcinile repetabile în fluxuri de lucru fiabile, rapide și conforme.',
+        efficiency_h3: 'Eficiență',
+        efficiency_p: 'Roboții lucrează 24/7 și se scalează la cerere, reducând timpii de procesare de la ore la minute și eliberând oamenii pentru activități cu valoare mai mare.',
+        accuracy_h3: 'Acuratețe &amp; conformitate',
+        accuracy_p: 'Aplicarea consecventă a regulilor și jurnalele de audit reduc erorile costisitoare și îmbunătățesc conformitatea în procesele critice.',
+        cost_h3: 'Reducerea costurilor',
+        cost_p: 'Costuri operaționale mai mici prin reducerea muncii manuale, mai puține escaladări și gestionarea vârfurilor fără supradimensionare.',
+        scalability_h3: 'Scalabilitate',
+        scalability_p: 'Automatizările se scalează orizontal pentru a răspunde cererii, iar orchestrarea asigură utilizare optimă și reziliență.',
+        how_it_works_h3: 'Cum funcționează automatizarea (în practică)',
+        how_it_works_p: 'Mapăm regulile de business, identificăm sistemele sursă, definim excepțiile și proiectăm un flux robust și observabil. Apoi construim, testăm și implementăm cu logare, alerte și rollback-uri adecvate.',
+        steps_h2: 'Pașii pentru a automatiza un proces',
+        steps_p: 'Abordarea mea end-to-end de la idee la producție stabilă.',
+        step1_h4: 'Descoperire &amp; delimitare',
+        step1_p: 'Identificarea candidaților cu reguli clare, intrări stabile, volum măsurabil și un caz de business solid. Documentăm fluxul actual și punctele dureroase.',
+        step2_h4: 'Fezabilitate &amp; evaluarea ROI',
+        step2_p: 'Verificăm accesibilitatea sistemelor (API/UI), constrângerile de securitate, ratele de excepții și estimăm economiile pentru a prioritiza backlog-ul.',
+        step3_h4: 'Designul soluției',
+        step3_p: 'Definim intrări/ieșiri, reguli de business, căi de excepție, gestionarea credențialelor, logare, alerte, SLA-uri și metrici de succes.',
+        step4_h4: 'Dezvoltare',
+        step4_p: 'Dezvoltarea roboților în Python/UiPath/Blue Prism cu componente modulare, testabile și operațiuni idempotente.',
+        step5_h4: 'Testare',
+        step5_p: 'Unitare, integrare și UAT cu date reale. Validăm acuratețea, performanța, reziliența și observabilitatea sub sarcina așteptată.',
+        step6_h4: 'Lansare &amp; orchestrare',
+        step6_p: 'Publicare prin orchestrator (programe/cozi) cu managementul secretelor, acces bazat pe roluri și controlul schimbărilor.',
+        step7_h4: 'Monitorizare &amp; suport',
+        step7_p: 'Dashboard-uri, alerte și proceduri on-call pentru excepții și SLA-uri. Analiză a cauzelor pentru incidente.',
+        step8_h4: 'Îmbunătățire',
+        step8_p: 'Iterăm cu feedback-ul business-ului, optimizăm performanța, mărim acoperirea și retragem pașii redundanți pe măsură ce sistemele evoluează.',
+        projects_h2: 'Proiecte selectate',
+        projects_p: 'Automatizări reale. Dă click pe un card pentru detalii (link către GitHub, studiu de caz sau demo).',
+        filter_all: 'Toate',
+        proj1_p: 'Soluție automată care verifică portalurile guvernamentale de programări și te anunță când pot fi rezervate sloturi și când. Acuratețe 100%, reducere a timpului de procesare cu 99%.',
+        proj2_p: 'Asistent de automatizare fiabil care extrage pagini XML și HTML și importă cursurile de schimb dorite în soluția de core banking. Rată de succes 99%, reducere a timpului cu 60%.',
+        proj3_p: 'Soluție globală pentru generarea automată a A1 Bescheinigung și livrarea sigură către solicitant, obținând constant 99% rată de succes, 90% reducere a timpului.',
+        proj4_p: 'Scraping rezilient cu cozi și verificări ale calității datelor, logare cuprinzătoare și stil de programare OOP.',
+        proj5_p: 'Robot de automatizare care procesează și generează contracte de credit, inclusiv condiții speciale, asigurând acuratețe și eficiență în gestionarea contractelor.',
+        proj6_p: 'Soluție automată care integrează noii angajați în sistemele HR, cu logare cuprinzătoare și gestionare robustă a excepțiilor.',
+        contact_h2: 'Contact',
+        contact_p: 'Gata de automatizare? Scrie-mi și hai să definim pașii procesului.',
+        email_label: 'Email',
+        linkedin_label: 'LinkedIn',
+        back_to_top: '↑ Înapoi sus',
+        footer_rights: 'Toate drepturile rezervate.'
+      };
+
+      function setLanguage(lang){
+        const dict = lang === 'ro' ? ro : englishDefaults;
+        document.querySelectorAll('[data-i18n]').forEach(el=>{
+          const key = el.dataset.i18n;
+          const value = (lang === 'ro' ? ro[key] : englishDefaults[key]) || englishDefaults[key] || '';
+          if(value) el.innerHTML = value;
+        });
+
+        // Title and meta
+        if(lang === 'ro'){
+          const roTitle = 'Mircea C · Dezvoltator de automatizări';
+          const roDesc = 'RPA & Python – 6+ ani experiență. Proiectez, construiesc și scalez automatizări care economisesc timp și reduc erorile.';
+          if(metaTitleEl) metaTitleEl.textContent = roTitle;
+          if(metaDescEl) metaDescEl.setAttribute('content', roDesc);
+          if(ogTitleEl) ogTitleEl.setAttribute('content', roTitle);
+          if(ogDescEl) ogDescEl.setAttribute('content', 'RPA & Python – 6+ ani experiență în UiPath, Blue Prism și Python.');
+        } else {
+          if(metaTitleEl) metaTitleEl.textContent = englishMeta.title;
+          if(metaDescEl) metaDescEl.setAttribute('content', englishMeta.desc);
+          if(ogTitleEl) ogTitleEl.setAttribute('content', englishMeta.ogTitle);
+          if(ogDescEl) ogDescEl.setAttribute('content', englishMeta.ogDesc);
+        }
+
+        // html lang
+        htmlEl.setAttribute('lang', lang);
+
+        // Toggle button shows target language
+        const next = lang === 'en' ? 'ro' : 'en';
+        if(langBtn){
+          langBtn.textContent = next.toUpperCase();
+          langBtn.setAttribute('aria-label', lang === 'en' ? 'Schimbă în română' : 'Switch to English');
+          langBtn.setAttribute('title', lang === 'en' ? 'Schimbă în română' : 'Switch to English');
+        }
+
+        localStorage.setItem('lang', lang);
+      }
+
+      if(langBtn){
+        langBtn.addEventListener('click', ()=>{
+          const current = htmlEl.getAttribute('lang') || 'en';
+          const next = current === 'en' ? 'ro' : 'en';
+          setLanguage(next);
+        });
+      }
+
+      const initial = localStorage.getItem('lang') || (navigator.language && navigator.language.startsWith('ro') ? 'ro' : 'en');
+      setLanguage(initial);
+    })();
   </script>
 </body>
 </html>
