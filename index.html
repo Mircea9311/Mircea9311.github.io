@@ -127,15 +127,18 @@
       .project{grid-column:span 6}
       .contact-card{grid-template-columns:1fr}
     }
-    @media (max-width: 640px){
-      .project{grid-column:1/-1}
-      .nav-inner{padding:12px 0}
-      .nav-toggle{display:inline-flex}
-      .menu{position:absolute;left:0;right:0;top:var(--nav-h);display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(15,23,42,.95);backdrop-filter:blur(10px);border-top:1px solid rgba(148,163,184,.18);border-bottom:1px solid rgba(148,163,184,.18);box-shadow:var(--shadow)}
-      .menu a, .menu .btn{padding:12px 16px;font-size:15px;border-radius:12px}
-      .menu .btn{justify-content:center}
-      .nav.open .menu{display:flex}
-    }
+              @media (max-width: 640px){
+       .project{grid-column:1/-1}
+       .nav-inner{padding:12px 0}
+       .nav-toggle{display:inline-flex}
+       #langBtn{display:inline-flex;padding:8px 12px;font-size:14px;border-radius:12px}
+       .menu{display:none}
+       .menu a{display:none}
+       .nav-inner{justify-content:space-between}
+       .nav.open .menu{display:flex;position:absolute;left:0;right:0;top:var(--nav-h);flex-direction:column;gap:8px;padding:12px;background:var(--card);backdrop-filter:blur(10px);border-top:1px solid rgba(148,163,184,.18);border-bottom:1px solid rgba(148,163,184,.18);box-shadow:var(--shadow)}
+       .nav.open .menu a{display:block;padding:12px 16px;font-size:15px;border-radius:12px;color:var(--text)}
+       .nav.open .menu a:hover{background:rgba(148,163,184,.12)}
+     }
     @media (max-width: 480px){
       .nav{background:linear-gradient(180deg, rgba(2,6,23,.9), rgba(2,6,23,.2))}
       .hero{padding:64px 0 28px}
@@ -167,15 +170,15 @@
         <span class="avatar" aria-hidden="true"></span>
         <span data-i18n="brand">Mircea&nbsp;C — Dezvoltator de automatizări</span>
       </a>
-      <button class="btn nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-menu">☰</button>
-      <div class="menu" id="primary-menu" role="menubar">
-        <a role="menuitem" href="#about" data-i18n="nav_about">Despre</a>
-        <a role="menuitem" href="#automation" data-i18n="nav_automation">Automatizare</a>
-        <a role="menuitem" href="#steps" data-i18n="nav_steps">Pașii procesului</a>
-        <a role="menuitem" href="#projects" data-i18n="nav_projects">Proiecte</a>
-        <a role="menuitem" href="#contact" data-i18n="nav_contact">Contact</a>
-        <button id="langBtn" class="btn" type="button" aria-label="Switch language" title="Switch language">🇷🇴 RO</button>
-      </div>
+                           <div class="menu" id="primary-menu" role="menubar">
+         <a role="menuitem" href="#about" data-i18n="nav_about">Despre</a>
+         <a role="menuitem" href="#automation" data-i18n="nav_automation">Automatizare</a>
+         <a role="menuitem" href="#steps" data-i18n="nav_steps">Pașii procesului</a>
+         <a role="menuitem" href="#projects" data-i18n="nav_projects">Proiecte</a>
+         <a role="menuitem" href="#contact" data-i18n="nav_contact">Contact</a>
+       </div>
+               <button id="langBtn" class="btn" type="button" aria-label="Switch language" title="Switch language" data-i18n="lang_btn">RO</button>
+       <button class="btn nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-menu">☰</button>
     </div>
   </nav>
 
@@ -449,18 +452,77 @@
       const ogTitleEl = document.querySelector('meta[property="og:title"]');
       const ogDescEl = document.querySelector('meta[property="og:description"]');
 
-      const englishDefaults = {};
-      document.querySelectorAll('[data-i18n]').forEach(el=>{
-        const key = el.dataset.i18n;
-        if(!(key in englishDefaults)) englishDefaults[key] = el.innerHTML.trim();
-      });
+             // Define English translations explicitly
+       const englishDefaults = {
+         brand: 'Mircea&nbsp;C — Automation Developer',
+         nav_about: 'About',
+         nav_automation: 'Automation',
+         nav_steps: 'Process Steps',
+         nav_projects: 'Projects',
+         nav_contact: 'Contact',
+         kicker_who: 'Who am I',
+         hero_h1: 'Automation developer focused on turning repetitive work into reliable software.',
+         hero_lead: 'I have 6+ years building, deploying, and maintaining automations in <strong>Python</strong>, <strong>UiPath</strong>, and <strong>Blue Prism</strong>. I help teams ship faster, reduce errors, and scale operations with auditable, resilient bots.',
+         cta_contact: 'Let\'s work together',
+         cta_projects: 'See selected projects',
+         what_i_do_h3: 'What I do',
+         what_i_do_p: 'Process discovery, solution design, bot development, testing, orchestration, monitoring, and continuous improvement. From quick Python scripts to enterprise-grade RPA.',
+         where_add_value_h3: 'Where I add value',
+         where_add_value_p: 'Back-office operations, finance, banking, customer support, reporting, and high-volume, rule-based workflows. I focus on stability, observability, and measurable ROI.',
+         why_auto_h2: 'Why automate processes?',
+         why_auto_p: 'Automation converts repeatable tasks into reliable, fast, and compliant workflows.',
+         efficiency_h3: 'Efficiency',
+         efficiency_p: 'Bots work 24/7 and scale on demand, cutting cycle times from hours to minutes and freeing people to focus on higher-value work.',
+         accuracy_h3: 'Accuracy &amp; Compliance',
+         accuracy_p: 'Consistent rule application and audit trails reduce costly errors and improve compliance posture across critical processes.',
+         cost_h3: 'Cost Savings',
+         cost_p: 'Lower operational costs through reduced manual effort, fewer escalations, and smoother peaks without overstaffing.',
+         scalability_h3: 'Scalability',
+         scalability_p: 'Automations scale horizontally to meet demand, with orchestration ensuring optimal utilization and resilience.',
+         how_it_works_h3: 'How automation works (in practice)',
+         how_it_works_p: 'We map business rules, identify systems of record, define exceptions, and design a robust, observable flow. Then we build, test, and deploy with proper logging, alerting, and rollbacks.',
+         steps_h2: 'The steps to automate a process',
+         steps_p: 'My end-to-end approach from idea to stable production.',
+         step1_h4: 'Discovery &amp; scoping',
+         step1_p: 'Identify candidates with clear rules, stable inputs, measurable volume, and a strong business case. Capture current-state workflow and pain points.',
+         step2_h4: 'Feasibility &amp; ROI assessment',
+         step2_p: 'Check systems\' accessibility (APIs/UI), security constraints, exception rates, and estimate savings to prioritize the backlog.',
+         step3_h4: 'Solution design',
+         step3_p: 'Define inputs/outputs, business rules, exception paths, credentials handling, logging, alerts, SLAs, and success metrics.',
+         step4_h4: 'Build',
+         step4_p: 'Develop bots in Python/UiPath/Blue Prism with modular, testable components and idempotent operations.',
+         step5_h4: 'Test',
+         step5_p: 'Unit, integration, and UAT with real data. Validate accuracy, performance, resilience, and observability under expected loads.',
+         step6_h4: 'Deploy &amp; orchestrate',
+         step6_p: 'Release via orchestrator (schedules/queues) with secrets management, role-based access, and change control.',
+         step7_h4: 'Monitor &amp; support',
+         step7_p: 'Dashboards, alerts, and on-call procedures for exceptions and SLAs. Root-cause analysis for incidents.',
+         step8_h4: 'Improve',
+         step8_p: 'Iterate with business feedback, optimize performance, add coverage, and retire redundant steps as systems evolve.',
+         projects_h2: 'Projects I worked on',
+         projects_p: 'Real-world automations.',
+         filter_all: 'All',
+         proj1_p: 'An automated solution that checks government booking portals and notifies you when slots can be booked and when. 100% accuracy, 99% cycle-time reduction.',
+         proj2_p: 'A reliable automation assistant that scrapes XML and HTML pages and imports desired exchange rates in core banking solution. 99% success rate, 60% time reduction.',
+         proj3_p: 'Global solution for automated A1 Bescheinigung generation and secure delivery to the requestor, consistently achieving a 99% success rate, 90% time reduction.',
+         proj4_p: 'Resilient scraping with queuing and data quality checks, comprehensive logging and OOP programming style.',
+         proj5_p: 'Automation robot that processes and generates loan agreements, including special conditions, ensuring accuracy and efficiency in credit contract handling.',
+         proj6_p: 'Automated solution that integrates new employees into core HR systems, featuring comprehensive logging and robust exception handling.',
+         contact_h2: 'Contact',
+         contact_p: 'Ready to automate? Reach out and let\'s scope your process.',
+         email_label: 'Email',
+         linkedin_label: 'LinkedIn',
+         back_to_top: '↑ Back to top',
+         footer_rights: 'All rights reserved.',
+                   lang_btn: 'EN'
+       };
 
-      const englishMeta = {
-        title: document.title,
-        desc: metaDescEl ? metaDescEl.getAttribute('content') : '' ,
-        ogTitle: ogTitleEl ? ogTitleEl.getAttribute('content') : '',
-        ogDesc: ogDescEl ? ogDescEl.getAttribute('content') : ''
-      };
+             const englishMeta = {
+         title: 'Mircea C · Automation Developer',
+         desc: 'RPA & Python automation developer with 6+ years of experience in UiPath, Blue Prism, and Python. I design, build, and scale automations that save time and reduce errors.',
+         ogTitle: 'Mircea C · Automation Developer',
+         ogDesc: 'RPA & Python automation developer with 6+ years of experience in UiPath, Blue Prism, and Python.'
+       };
 
       const ro = {
         brand: 'Mircea&nbsp;C — Dezvoltator de automatizări',
@@ -522,7 +584,8 @@
         email_label: 'Email',
         linkedin_label: 'LinkedIn',
         back_to_top: '↑ Înapoi sus',
-        footer_rights: 'Toate drepturile rezervate.'
+                 footer_rights: 'Toate drepturile rezervate.',
+                   lang_btn: 'RO'
       };
 
       function setLanguage(lang){
@@ -551,11 +614,10 @@
         // html lang
         htmlEl.setAttribute('lang', lang);
 
-        // Toggle button shows target language with flag
+        // Toggle button shows target language
         const next = lang === 'en' ? 'ro' : 'en';
         if(langBtn){
-          const flag = next === 'ro' ? '🇷🇴' : '🇺🇸';
-          langBtn.textContent = `${flag} ${next.toUpperCase()}`;
+          langBtn.textContent = next.toUpperCase();
           langBtn.setAttribute('aria-label', lang === 'en' ? 'Schimbă în română' : 'Switch to English');
           langBtn.setAttribute('title', lang === 'en' ? 'Schimbă în română' : 'Switch to English');
         }
